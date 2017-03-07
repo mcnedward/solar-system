@@ -23,5 +23,5 @@ app.use('/css/bootstrap', express.static(path.join(modules, 'bootstrap', 'dist',
 app.use('/css', express.static(path.join(modules, './bootstrap/dist/css')));
 
 app.listen(3000, '0.0.0.0', () => {
-  console.log('GA app listening on port 3000!');
+  console.log('Solar System app listening on port 3000!');
 })

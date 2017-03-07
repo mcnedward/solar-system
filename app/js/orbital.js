@@ -1,39 +1,38 @@
-function Orbital(x, y, radius, parent, distance, isMoon) {
+function Orbital(x, y, radius, parentOrbital, distance) {
   var self = this;
 
   self.x = x;
   self.y = y;
   self.radius = radius;
   self.distance = distance;
-  self.parent = parent;
+  self.parentOrbital = parentOrbital;
   self.children = [];
   self.color = randomColor();
   var speed = random(0.02, 0.08),
       angle = random(0, Math.PI);
 
-  // if (!isMoon) createChildren(childCount);
+  const childMin = 15,
+      childMax = 25;
 
-  // var childMin = 15,
-  //     childMax = 25;
-  // function createChildren(count) {
-  //   var previousDistance = 0;
-  //   for (var i = 0; i < count; i++) {
-  //     var max = childMax * (0.3 * i);
-  //     if (childMax < childMin) childMax = childMin + 1;
+  self.createChildren = function(count, hasMoreChildren) {
+    var previousDistance = 0;
+    for (var i = 0; i < count; i++) {
+      var max = childMax * (0.3 * i);
+      if (childMax < childMin) childMax = childMin + 1;
       
-  //     var radius = randomInt(childMin, childMax);
-  //     var distance = randomInt(50, 150) + previousDistance;
-  //     previousDistance = distance;
+      var radius = randomInt(childMin, childMax);
+      var distance = randomInt(50, 150) + previousDistance;
+      previousDistance = distance;
 
-  //     var newChildCount = randomInt(0, 3);
-  //     var child = new Orbital(0, 0, radius, newChildCount, self, distance, true);
-  //     self.children.push(child);
-  //     previous = child;
-  //   }
-  // }
+      var child = new Orbital(0, 0, radius, self, distance);
+      self.children.push(child);
+      previous = child;
 
-  self.addChild = (child) => {
-    self.children.push(child)
+      if (hasMoreChildren) {
+        var newChildCount = randomInt(0, 3);
+        self.createChildren(newChildCount, false);
+      }
+    }
   }
 
   function randomColor(alpha) {
@@ -50,10 +49,10 @@ function Orbital(x, y, radius, parent, distance, isMoon) {
 
   self.render = () => {
     var x, y;
-    if (parent) {
-      var r = self.radius + self.distance + (parent.radius * 0.5);
-      x = parent.x + r * Math.cos(angle);
-      y = parent.y + r * Math.sin(angle);
+    if (self.parentOrbital) {
+      var r = self.radius + self.distance + (self.parentOrbital.radius * 0.5);
+      x = self.parentOrbital.x + r * Math.cos(angle);
+      y = self.parentOrbital.y + r * Math.sin(angle);
     } else {
       x = self.x;
       y = self.y;
