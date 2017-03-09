@@ -1,4 +1,4 @@
-function Orbital(x, y, radius, parentOrbital, distance) {
+function Orbital(x, y, radius, parentOrbital, distance, level) {
   var self = this;
 
   self.x = x;
@@ -8,6 +8,9 @@ function Orbital(x, y, radius, parentOrbital, distance) {
   self.parentOrbital = parentOrbital;
   self.children = [];
   self.color = randomColor();
+
+  self.level = level;
+
   var speed = random(0.02, 0.08),
       angle = random(0, Math.PI);
 
@@ -24,13 +27,13 @@ function Orbital(x, y, radius, parentOrbital, distance) {
       var distance = randomInt(50, 150) + previousDistance;
       previousDistance = distance;
 
-      var child = new Orbital(0, 0, radius, self, distance);
+      var child = new Orbital(0, 0, radius, self, distance, self.level + 1);
       self.children.push(child);
       previous = child;
 
       if (hasMoreChildren) {
         var newChildCount = randomInt(0, 3);
-        self.createChildren(newChildCount, false);
+        child.createChildren(newChildCount, false);
       }
     }
   }
@@ -47,17 +50,14 @@ function Orbital(x, y, radius, parentOrbital, distance) {
     angle += speed;
   }
 
-  self.render = () => {
+  self.render = (parent) => {
     var x, y;
-    if (self.parentOrbital) {
-      var r = self.radius + self.distance + (self.parentOrbital.radius * 0.5);
-      x = self.parentOrbital.x + r * Math.cos(angle);
-      y = self.parentOrbital.y + r * Math.sin(angle);
-    } else {
-      x = self.x;
-      y = self.y;
+    if (parent) {
+      var r = self.radius + self.distance + (parent.radius * 0.5);
+      self.x = parent.x + r * Math.cos(angle);
+      self.y = parent.y + r * Math.sin(angle);
     }
 
-    renderer.ellipse(x, y, self.radius, self.color);
+    renderer.ellipse(self.x, self.y, self.radius, self.color);
   }
 }
