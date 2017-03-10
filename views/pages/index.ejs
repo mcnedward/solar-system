@@ -27,7 +27,7 @@
   <script src="js/orbital.js"></script>
   <script src="js/solarSystem.js"></script>
   <script>
-    const width = 800, height = 800;
+    // const width = 800, height = 800;
     $(document).ready(() => {
       renderer = new Renderer();
       var solarSystem = new SolarSystem();
@@ -37,10 +37,10 @@
 
   <div id="main" class="container-fluid">
     <div class="row">
-      <div class="col-xs-12 col-md-9">
-        <canvas id="theCanvas" data-bind="attr: {width: width, height: height}"></canvas>
+      <div class="col-xs-12 col-md-8" id="canvasContainer">
+        <canvas id="theCanvas"></canvas>
       </div>
-      <div class="col-xs-12 col-md-3">
+      <div class="col-xs-12 col-md-4">
         <div data-bind="with: sunOptions">
           <%- include("optionsCard", {id: "sun", title:"Sun Options", obs: "sunOptions"}) %>
         </div>
@@ -50,8 +50,14 @@
         <div data-bind="with: moonOptions">
           <%- include("optionsCard", {id: "moon", title:"Moon Options", obs: "moonOptions"}) %>
         </div>
-        <button class="btn btn-success btn-lg btn-block mt-3" data-bind="click: generateSolarSystem">GENERATE</button>
-        <button class="btn btn-warning btn-lg btn-block mt-3" data-bind="click: resetToDefault">RESET</button>
+        <div class="row mb-1">
+          <div class="col">
+            <button class="btn btn-success btn-block mt-1" data-bind="click: generateSolarSystem">GENERATE</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-warning btn-block mt-1" data-bind="click: resetToDefault">RESET</button>
+          </div>
+        </div>
       </div>
   </div>
 

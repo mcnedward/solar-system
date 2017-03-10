@@ -4,17 +4,35 @@ function Renderer() {
   self.backgroundColor = 'black';
 
   const canvas = $('#theCanvas')[0],
+        canvasContainer = $('#canvasContainer');
         context = canvas.getContext('2d');
+  
+  self.originX = 0;
+  self.originY = 0;
+  self.width = canvasContainer.width();
+  self.height = window.innerHeight;
+  resizeCanvas();
 
   function render() {
     try {
       requestAnimationFrame(render);
+      
+      // Setup the canvas for translate
+      context.save();
+
+      self.originX = -(self.width / 2);
+      self.originY = -(self.height / 2);
+      context.translate(self.width / 2, self.height / 2);
+      
       // Clear the canvas each frame
       clear();
 
       // Do the rendering
       if (self.render())
         self.render()();
+      
+      // Restore after all drawing is done
+      context.restore();
       
     } catch(e) {
       // Swallowing exeptions till I figure a better way to report them
@@ -58,8 +76,17 @@ function Renderer() {
       self.polygon(separatePoints, color);
   };
 
+  window.addEventListener('resize', resizeCanvas, false);
+  function resizeCanvas() {
+    canvas.width = canvasContainer.width();
+    canvas.height = window.innerHeight;
+
+    self.width = canvasContainer.width();
+    self.height = window.innerHeight;
+  }
+
   function clear() {
     context.fillStyle = self.backgroundColor;
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillRect(self.originX, self.originY, self.width, self.height);
   }
 }

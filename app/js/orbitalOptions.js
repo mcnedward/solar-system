@@ -22,6 +22,38 @@ function OrbitalOptions(type) {
     return _useRandomColor ? randomColor() : _color;
   }
 
+  ko.computed(() => {
+    if (self.minSize() > self.maxSize()) {
+      self.minSize(self.maxSize());
+    }
+    if (self.maxSize() < self.minSize()) {
+      self.maxSize(self.minSize());
+    }
+  });
+
+  ko.computed(() => {
+    if (self.minDistance() > self.maxDistance()) {
+      self.minDistance(self.maxDistance());
+    }
+  });
+  ko.computed(() => {
+    var maxDistance = (renderer.width / 2) / self.minCount();
+    if (self.maxDistance() > maxDistance) {
+      self.maxDistance(maxDistance);
+    }
+  })
+
+  ko.computed(() => {
+    if (self.minCount() > self.maxCount()) {
+      self.minCount(self.maxCount());
+    }
+  });
+  ko.computed(() => {
+    if (self.maxCount() < self.minCount()) {
+      self.maxCount(self.minCount());
+    }
+  });
+
   self.save = (useDefault) => {
     var options;
     if (useDefault) {

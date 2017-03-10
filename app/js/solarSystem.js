@@ -1,25 +1,33 @@
 function SolarSystem() {
   var self = this;
 
-  self.width = ko.observable(width);
-  self.height = ko.observable(height);
-
   self.sunOptions = ko.observable(new OrbitalOptions('sun'));
   self.planetOptions = ko.observable(new OrbitalOptions('planet'));
   self.moonOptions = ko.observable(new OrbitalOptions('moon'));
 
-  var sun;
+  var sun,
+      stars;
+  const starCount = 500,
+        starRadius = 0.5,
+        starColor = '#ffffff';
   self.generateSolarSystem = function() {
     sun = new Orbital(null, {
       level: self.sunOptions().level(),
       radius: self.sunOptions().radius(),
       color: self.sunOptions().color(),
     });
-    sun.setPosition(width / 2, height / 2);
     sun.setName('The Sun');
 
     var orbitalOptions = [self.sunOptions(), self.planetOptions(), self.moonOptions()];
     sun.createChildren(orbitalOptions);
+
+    // Create the stars every time as well, in case the view size has changed
+    stars = [];
+    for (var i = 0; i < starCount; i++) {
+      var x = randomInt(renderer.originX, renderer.width);
+      var y = randomInt(renderer.originY, renderer.height);
+      stars.push({x: x, y: y});
+    }
 
     // Save the current options
     self.sunOptions().save();
@@ -32,18 +40,7 @@ function SolarSystem() {
     self.sunOptions().save(true);
     self.planetOptions().save(true);
     self.moonOptions().save(true);
-    
     self.generateSolarSystem();
-  }
-
-  const starCount = 500,
-        starRadius = 0.5,
-        starColor = '#ffffff';
-  var stars = [];
-  for (var i = 0; i < starCount; i++) {
-    var x = randomInt(0, self.width());
-    var y = randomInt(0, self.height());
-    stars.push({x: x, y: y});
   }
 
   renderer.render(() => {
@@ -60,11 +57,11 @@ function SolarSystem() {
       star.y += 0.5;
       renderer.ellipse(star.x, star.y, starRadius, starColor);
 
-      if (star.x > width) {
-        star.x = 0;
+      if (star.x > renderer.width) {
+        star.x = renderer.originX;
       }
-      if (star.y > height) {
-        star.y = 0;
+      if (star.y > renderer.height) {
+        star.y = renderer.originY;
       }
     }
   }
