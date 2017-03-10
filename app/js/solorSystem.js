@@ -4,20 +4,42 @@ function SolorSystem() {
   self.width = ko.observable(width);
   self.height = ko.observable(height);
 
-  var sunRadius = 50,
-      planetMin = 15,
-      planetMax = 25;
-
-  var sun = new Orbital(width / 2, height / 2, sunRadius, null, null, 1);
-  sun.color = '#FDB813';
+  var sun = new Orbital(width / 2, height / 2, null, sunOptions);
   sun.name = 'The Sun';
   sun.createChildren(3, true);
 
+  const starCount = 500,
+        starRadius = 1,
+        starColor = '#ffffff';
+  var stars = [];
+  for (var i = 0; i < starCount; i++) {
+    var x = randomInt(0, self.width());
+    var y = randomInt(0, self.height());
+    stars.push({x: x, y: y});
+  }
+
   renderer.render(() => {
+    renderStars();
     sun.update();
     sun.render();
     renderChildren(sun);
   });
+
+  function renderStars() {
+    for (var i = 0, l = stars.length; i < l; i++) {
+      var star = stars[i];
+      star.x += 1;
+      star.y += 0.5;
+      renderer.ellipse(star.x, star.y, starRadius, starColor);
+
+      if (star.x > width) {
+        star.x = 0;
+      }
+      if (star.y > height) {
+        star.y = 0;
+      }
+    }
+  }
 
   function renderChildren(orbital) {
     for (var i = 0; i < orbital.children.length; i++) {
