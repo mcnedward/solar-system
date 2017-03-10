@@ -1,38 +1,15 @@
-function SolorSystem() {
+function SolarSystem() {
   var self = this;
 
   self.width = ko.observable(width);
   self.height = ko.observable(height);
 
-  const sunOptions = {
-    level: 1,
-    radius: 25,
-    color: '#FDB813'
-  },
-  planetOptions = {
-    level: 2,
-    minSize: 10,
-    maxSize: 15,
-    minDistance: 20,
-    maxDistance: 100,
-    count: randomInt(1, 6)
-  },
-  moonOptions = {
-    level: 3,
-    minSize: 2,
-    maxSize: 7,
-    minDistance: 10,
-    maxDistance: 30,
-    count: randomInt(0, 3),
-    color: '#d3d3d3'
-  };
-
-  self.sunOptions = ko.observable(new OrbitalOptions(sunOptions, 'Sun'));
-  self.planetOptions = ko.observable(new OrbitalOptions(planetOptions, 'Planet'));
-  self.moonOptions = ko.observable(new OrbitalOptions(moonOptions, 'Moon'));
+  self.sunOptions = ko.observable(new OrbitalOptions('sun'));
+  self.planetOptions = ko.observable(new OrbitalOptions('planet'));
+  self.moonOptions = ko.observable(new OrbitalOptions('moon'));
 
   var sun;
-  self.createSolarSystem = function() {
+  self.generateSolarSystem = function() {
     sun = new Orbital(null, {
       level: self.sunOptions().level(),
       radius: self.sunOptions().radius(),
@@ -43,12 +20,21 @@ function SolorSystem() {
 
     var orbitalOptions = [self.sunOptions(), self.planetOptions(), self.moonOptions()];
     sun.createChildren(orbitalOptions);
-  }
-  self.createSolarSystem();
 
-  // sun = new Orbital(width / 2, height / 2, null, sunOptions);
-  // sun.name = 'The Sun';
-  // sun.createChildren(sunOptions.childCount, true);
+    // Save the current options
+    self.sunOptions().save();
+    self.planetOptions().save();
+    self.moonOptions().save();
+  }
+  self.generateSolarSystem();
+
+  self.resetToDefault = () => {
+    self.sunOptions().save(true);
+    self.planetOptions().save(true);
+    self.moonOptions().save(true);
+    
+    self.generateSolarSystem();
+  }
 
   const starCount = 500,
         starRadius = 0.5,

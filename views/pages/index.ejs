@@ -25,12 +25,12 @@
   </script>
   <script src="js/orbitalOptions.js"></script>
   <script src="js/orbital.js"></script>
-  <script src="js/solorSystem.js"></script>
+  <script src="js/solarSystem.js"></script>
   <script>
     const width = 800, height = 800;
     $(document).ready(() => {
       renderer = new Renderer();
-      var solarSystem = new SolorSystem();
+      var solarSystem = new SolarSystem();
       ko.applyBindings(solarSystem);
     });
   </script>
@@ -50,6 +50,8 @@
         <div data-bind="with: moonOptions">
           <%- include("optionsCard", {id: "moon", title:"Moon Options", obs: "moonOptions"}) %>
         </div>
+        <button class="btn btn-success btn-lg btn-block mt-3" data-bind="click: generateSolarSystem">GENERATE</button>
+        <button class="btn btn-warning btn-lg btn-block mt-3" data-bind="click: resetToDefault">RESET</button>
       </div>
   </div>
 

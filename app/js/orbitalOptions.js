@@ -1,21 +1,90 @@
-function OrbitalOptions(options, type) {
+function OrbitalOptions(type) {
   var self = this;
 
   self.type = type;
 
-  self.level = ko.observable(options.level);
-  self.radius = ko.observable(options && options.radius ? options.radius : 0);
-  self.minSize = ko.observable(options && options.minSize ? options.minSize : 10);
-  self.maxSize = ko.observable(options && options.maxSize ? options.maxSize : 10);
-  self.minDistance = ko.observable(options && options.minDistance ? options.minDistance : 10);
-  self.maxDistance = ko.observable(options && options.maxDistance ? options.maxDistance : 10);
-  self.count = ko.observable(options && options.count ? options.count : randomInt(1, 3));
+  self.level = ko.observable();
+  self.radius = ko.observable();
+  self.minSize = ko.observable();
+  self.maxSize = ko.observable();
+  self.minDistance = ko.observable();
+  self.maxDistance = ko.observable();
+  self.minCount = ko.observable();
+  self.maxCount = ko.observable();
+  var _color,
+      _useRandomColor;
+  
+  self.count = () => {
+    return randomInt(self.minCount(), self.maxCount());
+  }
 
-  var _color = options && options.color ? options.color : null;
   self.color = () => {
-    if (_color !== null) {
-      return _color;
-    } else
-    return randomColor();
+    return _useRandomColor ? randomColor() : _color;
+  }
+
+  self.save = (useDefault) => {
+    var options;
+    if (useDefault) {
+      // Reset everything to the defaults
+      options = defaultOptions[self.type];
+      create(options);
+    } else {
+      options = {
+        level: self.level(),
+        radius: self.radius(),
+        minSize: self.minSize(),
+        maxSize: self.maxSize(),
+        minDistance: self.minDistance(),
+        maxDistance: self.maxDistance(),
+        minCount: self.minCount(),
+        maxCount: self.maxCount(),
+        color: self.color(),
+        useRandomColor: _useRandomColor
+      };
+    }
+    localStorage.setItem(self.type, JSON.stringify(options));
+  }
+
+  const defaultOptions = {
+    sun: {
+      level: 1,
+      radius: 25,
+      color: '#FDB813'
+    },
+    planet: {
+      level: 2,
+      minSize: 10,
+      maxSize: 15,
+      minDistance: 20,
+      maxDistance: 100,
+      minCount: 1,
+      maxCount: 6
+    },
+    moon: {
+      level: 3,
+      minSize: 2,
+      maxSize: 7,
+      minDistance: 10,
+      maxDistance: 30,
+      minCount: 0,
+      maxCount: 3,
+      color: '#d3d3d3'
+    }
+  }
+
+  var options = localStorage.getItem(self.type) ? JSON.parse(localStorage.getItem(self.type)) : defaultOptions[self.type];
+  create(options);
+
+  function create(options) {
+    self.level(options.level);
+    self.radius(options && options.radius ? parseInt(options.radius, 10) : 0);
+    self.minSize(options && options.minSize ? parseInt(options.minSize, 10) : 10);
+    self.maxSize = ko.observable(options && options.maxSize ? parseInt(options.maxSize, 10) : 10);
+    self.minDistance(options && options.minDistance ? parseInt(options.minDistance, 10) : 10);
+    self.maxDistance(options && options.maxDistance ? parseInt(options.maxDistance, 10) : 10);
+    self.minCount(options && options.minCount ? parseInt(options.minCount, 10) : 1);
+    self.maxCount(options && options.maxCount ? parseInt(options.maxCount, 10) : 1);
+    _color = options && options.color ? options.color : null;
+    _useRandomColor = options && options.useRandomColor ? options.useRandomColor : (_color === null);
   }
 }
