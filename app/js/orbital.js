@@ -1,10 +1,11 @@
-function Orbital(x, y, parent, options) {
+function Orbital(parent, options) {
   var self = this;
 
-  self.x = x;
-  self.y = y;
-  self.radius = options.radius;
+  self.x = 0;
+  self.y = 0;
+  self.name = 'Orbital';
   self.parentOrbital = parent;
+  self.radius = options.radius;
   self.distance = options.distance;
   self.level = options.level;
   self.color = options.color ? options.color : randomColor();
@@ -13,46 +14,47 @@ function Orbital(x, y, parent, options) {
   var speed = random(0.02, 0.04),
       angle = random(0, Math.PI);
 
-  const childMinSize = options.childMinSize,
-        childMaxSize = options.childMaxSize,
-        childMinDistance = options.childMinDistance,
-        childMaxDistance = options.childMaxDistance;
+  self.createChildren = function(orbitalOptions) {
+    var orbitalOption = orbitalOptions[self.level];
 
-  self.createChildren = function(count, hasMoreChildren) {
+    var minSize = orbitalOption.minSize(),
+        maxSize = orbitalOption.maxSize(),
+        minDistance = orbitalOption.minDistance(),
+        maxDistance = orbitalOption.maxDistance(),
+        count = orbitalOption.count();
+
     var previousDistance = 0;
     for (var i = 0; i < count; i++) {
-      var max = childMaxSize * (0.3 * i);
-      if (childMaxSize < childMinSize) childMaxSize = childMinSize + 1;
+      var max = maxSize * (0.3 * i);
+      if (maxSize < minSize) maxSize = minSize + 1;
       
-      var radius = randomInt(childMinSize, childMaxSize);
-      var distance = randomInt(childMinDistance, childMaxDistance) + previousDistance;
+      var radius = randomInt(minSize, maxSize);
+      var distance = randomInt(minDistance, maxDistance) + previousDistance;
       previousDistance = distance;
 
-      var options;
-      if (self.level === 1) {
-        options = planetOptions;
-      } else {
-        options = moonOptions;
-      }
-      options.radius = radius;
-      options.distance = distance;
+      var childOptions = {
+        radius: radius,
+        distance: distance,
+        level: orbitalOption.level(),
+        color: orbitalOption.color()
+      };
 
-      var child = new Orbital(0, 0, self, options);
+      var child = new Orbital(self, childOptions);
       self.children.push(child);
       previous = child;
 
-      if (hasMoreChildren) {
-        child.createChildren(options.childCount, false);
+      if (self.level < 2) {
+        child.createChildren(orbitalOptions);
       }
     }
   }
 
-  function randomColor(alpha) {
-    var r = parseInt(randomInt(0, 99), 16);
-    var g = parseInt(randomInt(0, 99), 16);
-    var b = parseInt(randomInt(0, 99), 16);
-    var a = alpha ? parseInt(alpha, 16) / 255 : 100;
-    return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
+  self.setPosition = function(x, y) {
+    self.x = x;
+    self.y = y;
+  }
+  self.setName = function(name) {
+    self.name = name;
   }
 
   self.update = () => {

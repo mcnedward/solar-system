@@ -15,6 +15,13 @@
     function randomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
+    function randomColor(alpha) {
+      var r = parseInt(randomInt(0, 99), 16);
+      var g = parseInt(randomInt(0, 99), 16);
+      var b = parseInt(randomInt(0, 99), 16);
+      var a = alpha ? parseInt(alpha, 16) / 255 : 100;
+      return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
+    }
   </script>
   <script src="js/orbitalOptions.js"></script>
   <script src="js/orbital.js"></script>
@@ -23,8 +30,8 @@
     const width = 800, height = 800;
     $(document).ready(() => {
       renderer = new Renderer();
-      var ga = new SolorSystem();
-      ko.applyBindings(ga);
+      var solarSystem = new SolorSystem();
+      ko.applyBindings(solarSystem);
     });
   </script>
 
@@ -34,9 +41,15 @@
         <canvas id="theCanvas" data-bind="attr: {width: width, height: height}"></canvas>
       </div>
       <div class="col-xs-12 col-md-3">
-        <%- include("optionsCard", {id: "sun", title:"Sun Options"}) %>
-        <%- include("optionsCard", {id: "planet", title:"Planet Options"}) %>
-        <%- include("optionsCard", {id: "moon", title:"Moon Options"}) %>
+        <div data-bind="with: sunOptions">
+          <%- include("optionsCard", {id: "sun", title:"Sun Options", obs: "sunOptions"}) %>
+        </div>
+        <div data-bind="with: planetOptions">
+          <%- include("optionsCard", {id: "planet", title:"Planet Options", obs: "planetOptions"}) %>
+        </div>
+        <div data-bind="with: moonOptions">
+          <%- include("optionsCard", {id: "moon", title:"Moon Options", obs: "moonOptions"}) %>
+        </div>
       </div>
   </div>
 

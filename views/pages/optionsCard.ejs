@@ -12,7 +12,7 @@
       <%if (id === "sun") { %>
       <div class="form-group">
         <label for="<%= id %>Radius">Radius</label>
-        <input type="number" class="form-control" id="<%= id %>Radius" placeholder="Enter the radius for the <%= id %>">
+        <input type="number" data-bind="textInput: radius" class="form-control" id="<%= id %>Radius" placeholder="Enter the radius for the <%= id %>">
       </div>
       <% } %>
 
