@@ -1,0 +1,58 @@
+<div class="card">
+  <div class="card-header" role="tab" id="<%= id %>OptionsHeader">
+    <h5 class="mb-0">
+      <a data-toggle="collapse" data-parent="#accordion" href="#<%= id %>Options" aria-expanded="false" aria-controls="<%= id %>Options">
+        <%- title %>
+      </a>
+    </h5>
+  </div>
+
+  <div id="<%= id %>Options" class="collapse show" role="tabpanel" aria-labelledby="<%= id %>OptionsHeader">
+    <div class="card-block">
+      <%if (id === "sun") { %>
+      <div class="form-group">
+        <label for="<%= id %>Radius">Radius</label>
+        <input type="number" class="form-control" id="<%= id %>Radius" placeholder="Enter the radius for the <%= id %>">
+      </div>
+      <% } %>
+
+      <%if (id === "planet" || id === "moon") { %>
+      <div class="form-group">
+        <label>Amount of <%= id %>s</label>
+        <div class="row">
+          <div class="col-6">
+            <input type="number" class="form-control" placeholder="Min">
+          </div>
+          <div class="col-6">
+            <input type="number" class="form-control" placeholder="Max">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Size of <%= id %>s</label>
+        <div class="row">
+          <div class="col-6">
+            <input type="number" class="form-control" placeholder="Min">
+          </div>
+          <div class="col-6">
+            <input type="number" class="form-control" placeholder="Max">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Distance between <%= id %>s</label>
+        <div class="row">
+          <div class="col-6">
+            <input type="number" class="form-control" placeholder="Min">
+          </div>
+          <div class="col-6">
+            <input type="number" class="form-control" placeholder="Max">
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>

@@ -6,10 +6,10 @@ function SolorSystem() {
 
   var sun = new Orbital(width / 2, height / 2, null, sunOptions);
   sun.name = 'The Sun';
-  sun.createChildren(3, true);
+  sun.createChildren(sunOptions.childCount, true);
 
   const starCount = 500,
-        starRadius = 1,
+        starRadius = 0.5,
         starColor = '#ffffff';
   var stars = [];
   for (var i = 0; i < starCount; i++) {

@@ -8,13 +8,18 @@
 <body>
   <script>
     var renderer;
-    // fuhttps://gist.github.com/kerimdzhanov/7529623turn
+    // https://gist.github.com/kerimdzhanov/7529623turn
     function random(min, max) {
       return Math.random() * (max - min) + min;
     }
     function randomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
+  </script>
+  <script src="js/orbitalOptions.js"></script>
+  <script src="js/orbital.js"></script>
+  <script src="js/solorSystem.js"></script>
+  <script>
     const width = 800, height = 800;
     $(document).ready(() => {
       renderer = new Renderer();
@@ -24,7 +29,15 @@
   </script>
 
   <div id="main" class="container-fluid">
-    <canvas id="theCanvas" data-bind="attr: {width: width, height: height}"></canvas>
+    <div class="row">
+      <div class="col-xs-12 col-md-9">
+        <canvas id="theCanvas" data-bind="attr: {width: width, height: height}"></canvas>
+      </div>
+      <div class="col-xs-12 col-md-3">
+        <%- include("optionsCard", {id: "sun", title:"Sun Options"}) %>
+        <%- include("optionsCard", {id: "planet", title:"Planet Options"}) %>
+        <%- include("optionsCard", {id: "moon", title:"Moon Options"}) %>
+      </div>
   </div>
 
 </body>

@@ -42,8 +42,7 @@ function Orbital(x, y, parent, options) {
       previous = child;
 
       if (hasMoreChildren) {
-        var newChildCount = randomInt(0, 3);
-        child.createChildren(newChildCount, false);
+        child.createChildren(options.childCount, false);
       }
     }
   }
