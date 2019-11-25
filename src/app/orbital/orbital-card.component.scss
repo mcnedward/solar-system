@@ -1,0 +1,36 @@
+@import "../../scss/colors";
+
+.card {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: $black;
+  background-color: $white;
+  border-radius: 2px;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+h3 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-row {
+  display: flex;
+}
+
+.option-container {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+
+  label {
+    margin-right: 0.5rem;
+  }
+}
+
+.inputRadius {
+  width: 100%;
+}

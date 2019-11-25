@@ -1,0 +1,20 @@
+#main {
+  display: flex;
+  align-items: center;
+}
+#left {
+  flex-grow: 3;
+}
+#right {
+  margin: 0.5rem;
+}
+
+.btn-solar {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  text-decoration: none;
+  border: none;
+  border-radius: 1;
+  cursor: pointer;
+}

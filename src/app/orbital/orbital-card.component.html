@@ -1,0 +1,56 @@
+<div class="card card-inverse">
+  <div class="card-header" role="tab" id="{{orbitalType}}OptionsHeader">
+    <h2>{{title}}</h2>
+  </div>
+
+  <div id="{{orbitalType}}Options">
+    <div class="card-block card-text p-3">
+      <div *ngIf="orbitalType === 'sun'">
+        <label for="{{orbitalType}}Radius">Radius</label>
+        <input class="inputRadius" type="number" [(ngModel)]="orbitalOptions.radius" id="{{orbitalType}}Radius" placeholder="Enter the radius for the {{orbitalType}}">
+      </div>
+
+      <div *ngIf="orbitalType !== 'sun'">
+
+        <h3>Amount of {{orbitalType}}s</h3>
+        <div class="card-row">
+          <div class="option-container">
+            <label>Min</label>
+            <input type="number" [(ngModel)]="orbitalOptions.minCount" placeholder="Min" min="0">
+          </div>
+          <div class="option-container">
+            <label>Max</label>
+            <input type="number" [(ngModel)]="orbitalOptions.maxCount" placeholder="Max" min="0">
+          </div>
+        </div>
+
+        <h3>Size of {{orbitalType}}s</h3>
+        <div class="card-row">
+          <div class="option-container">
+            <label>Min</label>
+            <input type="number" [(ngModel)]="orbitalOptions.minSize" placeholder="Min" min="0">
+          </div>
+          <div class="option-container">
+            <label>Max</label>
+            <input type="number" [(ngModel)]="orbitalOptions.maxSize" placeholder="Max" min="0">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Distance between {{orbitalType}}s</h3>
+
+        <div class="card-row">
+          <div class="option-container">
+            <label>Min</label>
+            <input type="number" [(ngModel)]="orbitalOptions.minDistance" placeholder="Min" min="0">
+          </div>
+          <div class="option-container">
+            <label>Max</label>
+            <input type="number" [(ngModel)]="orbitalOptions.maxDistance" placeholder="Max" min="0">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

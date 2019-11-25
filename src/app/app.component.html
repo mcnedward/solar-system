@@ -1,0 +1,17 @@
+<h1 class="text-center">Solar System</h1>
+<div id="main">
+  <div id="left">
+    <renderer id="renderer" [width]="1200" [height]="700" (render)="doRender($event)"></renderer>
+  </div>
+
+  <div id="right">
+    <orbital-card orbitalType="sun" #sunCard></orbital-card>
+    <orbital-card orbitalType="planet" #planetCard></orbital-card>
+    <orbital-card orbitalType="moon" #moonCard></orbital-card>
+
+    <div class="button-container">
+      <button class="btn btn-green btn-solar" (click)="generateSolarSystem()">GENERATE</button>
+      <button class="btn btn-purple btn-solar" (click)="resetToDefault()">RESET</button>
+    </div>
+  </div>
+</div>
