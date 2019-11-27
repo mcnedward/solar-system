@@ -17,6 +17,7 @@ export class AppComponent implements AfterViewInit {
   @ViewChild('sunCard') private sunCard: OrbitalCardComponent;
   @ViewChild('planetCard') private planetCard: OrbitalCardComponent;
   @ViewChild('moonCard') private moonCard: OrbitalCardComponent;
+  copyrightDate: number = new Date().getFullYear();
   private sun: Orbital;
   private stars: Vector[];
   private starCount = 2000;

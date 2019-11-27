@@ -1,3 +1,5 @@
+@import '../scss/colors';
+
 main {
   display: flex;
   min-height: 100vh;
@@ -37,7 +39,23 @@ header {
 }
 
 footer {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $white;
+
+  span {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  a {
+    color: $white;
+    text-decoration: none;
+  }
+  a:hover {
+    opacity: 0.5;
+  }
 }
 
 .btn-solar {
