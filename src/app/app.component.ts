@@ -31,20 +31,28 @@ export class AppComponent implements AfterViewInit {
    * Generates a solor system based on the current orbital options from the UI.
    */
   generateSolarSystem() {
-    this.sun = new Orbital(null, this.sunCard.orbitalOptions, 0);
+    let sunX = this.renderer.width / 2;
+    let sunY = this.renderer.height / 2;
+    this.sun = new Orbital(this.sunCard.orbitalOptions, 0, sunX, sunY);
     this.sun.setName('The Sun');
     this.sun.createChildren([this.sunCard.orbitalOptions, this.planetCard.orbitalOptions, this.moonCard.orbitalOptions]);
-
-    this.stars = new Array<Vector>();
-    for (let i = 0; i < this.starCount; i++) {
-      let x = Utils.randomInt(this.renderer.originX, this.renderer.width);
-      let y = Utils.randomInt(this.renderer.originY, this.renderer.height);
-      this.stars.push(new Vector(x, y));
-    }
+    
+    this.generateStars();
 
     this.sunCard.save();
     this.planetCard.save();
     this.moonCard.save();
+  }
+
+  private generateStars() {
+    let originX = this.renderer.originX;
+    let originY = this.renderer.originY;
+    this.stars = new Array<Vector>();
+    for (let i = 0; i < this.starCount; i++) {
+      let x = Utils.randomInt(originX, this.renderer.width);
+      let y = Utils.randomInt(originY, this.renderer.height);
+      this.stars.push(new Vector(x, y));
+    }
   }
 
   resetToDefault() {
@@ -94,7 +102,14 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  onHeightChange(height: number) {
-    console.log(height)
+  onRenderResize(renderer: Renderer) {
+    //Regenerate the stars
+    this.generateStars();
+
+    // Reposition the sun in the middle
+    let sunX = this.renderer.width / 2;
+    let sunY = this.renderer.height / 2;
+    this.sun.position.x = sunX;
+    this.sun.position.y = sunY;
   }
 }

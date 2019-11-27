@@ -7,7 +7,7 @@ import Logger from '../../utils/logger';
 @Component({
   selector: 'renderer',
   template: `
-  <div #canvasContainer id="canvasContainer" [ngClass]="{'fixed-canvas': fixedSize, 'text-center': center}">
+  <div #canvasContainer id="canvasContainer" style="height:80vh" [ngClass]="{'fixed-canvas': fixedSize, 'text-center': center}">
     <canvas #theCanvas id="theCanvas"></canvas>
   </div>`,
   styles: [
@@ -16,19 +16,18 @@ import Logger from '../../utils/logger';
   ]
 })
 export class Renderer implements AfterViewInit {
+  @Output() renderResize: EventEmitter<Renderer> = new EventEmitter();
   @Input() width: number;
-  @Output() widthChange: EventEmitter<number> = new EventEmitter();
   @Input() height: number;
-  @Output() heightChange: EventEmitter<number> = new EventEmitter();
   @Output() render: EventEmitter<Renderer> = new EventEmitter();
   @Output() mouseOver: EventEmitter<Vector> = new EventEmitter();
   @Input() fixedSize: boolean;
   @Input() center = true;
-  @ViewChild('theCanvas') canvas;
+  @ViewChild('theCanvas') canvasView;
   @ViewChild('canvasContainer') canvasContainer;
   originX: number;
   originY: number;
-  private scale: number;
+  private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private imageBackground: HTMLImageElement;
   private imageLoaded = false;
@@ -37,17 +36,17 @@ export class Renderer implements AfterViewInit {
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngAfterViewInit() {
-    let canvas = this.canvas.nativeElement;
-    this.context = canvas.getContext('2d');
-    
+    this.canvas = this.canvasView.nativeElement;
+    this.canvasContainer = document.getElementById('canvasContainer');
+    this.context = this.canvas.getContext('2d');
+
     this.resizeCanvas();
     this.renderLoop();
   }
 
   ellipse(x: number, y: number, radius: number, color: string) {
     this.context.beginPath();
-    let scaledRadius = this.scale * radius;
-    this.context.ellipse(x, y, scaledRadius, scaledRadius, 0, 2 * Math.PI, 0, false);
+    this.context.ellipse(x, y, radius, radius, 0, 2 * Math.PI, 0, false);
     this.context.fillStyle = color;
     this.context.fill();
     this.context.closePath();
@@ -108,10 +107,13 @@ export class Renderer implements AfterViewInit {
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    let rect = this.canvas.nativeElement.getBoundingClientRect();
+    let rect = this.canvasView.nativeElement.getBoundingClientRect();
 
-    let centerX = this.width / 2,
-      centerY = this.height / 2;
+    let width = this.canvas.width;
+    let height = this.canvas.height;
+
+    let centerX = width / 2;
+    let centerY = height / 2;
 
     let x = event.clientX - rect.left - centerX;
     let y = event.clientY - rect.top - centerY;
@@ -120,20 +122,24 @@ export class Renderer implements AfterViewInit {
 
   private renderLoop() {
     try {
-      requestAnimationFrame(() => { this.renderLoop(); });
-
       this.context.save();
-      
-      this.originX = -(this.width / 2);
-      this.originY = -(this.height / 2);
-      this.context.translate(this.width / 2, this.height / 2);
-      
-      this.clear();
+
+      let width = this.canvas.width;
+      let height = this.canvas.height;
+      this.width = width;
+      this.height = height;
+
+      this.originX = 0;
+      this.originY = 0;
+
+      this.clear(this.context.canvas);
       this.drawImageBackground();
-      
+
       this.render.emit(this);
-      
+
       this.context.restore();
+
+      requestAnimationFrame(() => { this.renderLoop(); });
     } catch (e) {
       Logger.error(e);
     }
@@ -143,16 +149,20 @@ export class Renderer implements AfterViewInit {
     if (!this.imageBackground || !this.imageLoaded) {
       return;
     }
-    let centerX = this.width / 2;
+
+    let width = this.canvas.width;
+    let height = this.canvas.height;
+
+    let centerX = width / 2;
     let centerY = this.height / 2;
     this.context.beginPath();
-    this.context.drawImage(this.imageBackground, (centerX) * -1, (centerY) * -1, this.width, this.height);
+    this.context.drawImage(this.imageBackground, (centerX) * -1, (centerY) * -1, width, height);
     this.context.closePath();
   }
 
-  private clear() {
+  private clear(canvas: HTMLCanvasElement) {
     this.context.fillStyle = this.backgroundColor;
-    this.context.fillRect(this.originX, this.originY, this.width, this.height);
+    this.context.fillRect(this.originX, this.originY, canvas.width, canvas.height);
   }
 
   private convertHex(hex, alpha) {
@@ -165,19 +175,18 @@ export class Renderer implements AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   resizeCanvas(event?) {
-    if (!this.fixedSize) {
-      let nativeElement = this.canvas.nativeElement;
-      let width = nativeElement.width;
-      let height = nativeElement.height;
-      
-      this.canvas.height = height;
-      this.width = width;
-      this.height = height;
-      this.scale = (this.height / this.width) * 0.5;
+    let width = this.canvasContainer.clientWidth;
+    let height = this.canvasContainer.clientHeight;
 
-      this.widthChange.emit(this.width);
-      this.heightChange.emit(this.height);
-      this.cdr.detectChanges();
-    }
+    this.canvas.width = width;
+    this.canvas.height = height;
+
+    this.canvas.style.width = width + 'px';
+    this.canvas.style.height = height + 'px';
+
+    this.width = width;
+    this.height = height;
+
+    this.renderResize.emit(this);
   }
 }

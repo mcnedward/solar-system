@@ -5,7 +5,7 @@
 
   <div id="solarSystem">
     <div id="left">
-      <renderer id="renderer" (render)="doRender($event)" (heightChange)="onHeightChange($event)"></renderer>
+      <renderer id="renderer" (render)="doRender($event)" (renderResize)="onRenderResize($event)"></renderer>
     </div>
 
     <div id="right">

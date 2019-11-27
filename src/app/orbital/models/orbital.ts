@@ -5,7 +5,7 @@ import { Renderer } from '../../utils/renderer/renderer.component';
 import { OrbitalOptions } from './orbitalOptions';
 
 export class Orbital {
-  position = new Vector(0, 0);
+  position: Vector;// = new Vector(0, 0);
   name = 'Orbital';
   parentOrbital: Orbital;
   radius: number;
@@ -18,16 +18,16 @@ export class Orbital {
 
 	/**
 	 * Constructor for an Orbital
-	 * @param parent The parent orbital
 	 * @param options The OrbitalOptions for this Orbital
 	 * @param distance The distance between this orbital and its parent.
 	 * @param radius The radius of this orbital. If this is not supplied, the radius from the OrbitalOptions will be used instead.
 	 */
-  constructor(parent: Orbital, options: OrbitalOptions, distance: number, radius?: number) {
+  constructor(options: OrbitalOptions, distance: number, x: number, y: number, radius?: number) {
+    this.distance = distance;
+    this.position = new Vector(x, y);
     this.radius = radius ? radius : options.radius;
     this.level = options.level;
     this.color = options.color();
-    this.distance = distance * 0.5;
     this.children = new Array<Orbital>();
     this.speed = Utils.random(0.02, 0.04);
     this.angle = Utils.random(0, Math.PI);
@@ -55,7 +55,8 @@ export class Orbital {
       let radius = Utils.randomInt(minSize, max);
       let distance = Utils.randomInt(minDistance, maxDistance) + previousDistance;
 
-      let child = new Orbital(this, levelOption, distance, radius);
+      // The x and y of a child will be set in update()
+      let child = new Orbital(levelOption, distance, 0, 0, radius);
       this.children.push(child);
 
       if (this.level < 2) {
@@ -70,9 +71,6 @@ export class Orbital {
 
   update(parent?: Orbital) {
     this.angle += this.speed;
-    // if (!parent) {
-    //   console.log(this.position)
-    // }
     if (parent) {
       let r = this.radius + this.distance + (parent.radius * 0.5);
       this.position.x = parent.position.x + r * Math.cos(this.angle);
