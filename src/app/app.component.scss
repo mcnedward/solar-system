@@ -4,22 +4,15 @@ main {
   flex-direction: column;
 }
 
-#solarSystem {
-  // flex: 1;
-  // display: flex;
-  // flex-wrap: wrap;
-  // justify-content: center;
+header {
+  h1 {
+    text-align: center;
+  }
 }
 
-#main {
-  // align-items: center;
-}
 #left {
   max-width: 1200px;
   margin: 0 auto;
-  // flex: 1 1 auto!important;
-}
-#right {
 }
 
 .card-container {

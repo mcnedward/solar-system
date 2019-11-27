@@ -13,7 +13,6 @@ import Logger from '../../utils/logger';
   styles: [
     '.fixed-canvas {overflow: auto}',
     '#theCanvas {width: 100%}',
-    // '#canvasContainer {max-width: 800px}'
   ]
 })
 export class Renderer implements AfterViewInit {
@@ -29,7 +28,6 @@ export class Renderer implements AfterViewInit {
   @ViewChild('canvasContainer') canvasContainer;
   originX: number;
   originY: number;
-  clientHeight: string;
   private scale: number;
   private context: CanvasRenderingContext2D;
   private imageBackground: HTMLImageElement;
@@ -170,17 +168,11 @@ export class Renderer implements AfterViewInit {
     if (!this.fixedSize) {
       let nativeElement = this.canvas.nativeElement;
       let width = nativeElement.width;
-      // let height = width * 1;
       let height = nativeElement.height;
-      console.log(this.canvas)
-      console.log(height)
       
       this.canvas.height = height;
       this.width = width;
       this.height = height;
-      this.clientHeight = nativeElement.clientHeight + 'px';
-      // this.clientHeight = height + 'px';
-      // this.scale = this.width / this.height;
       this.scale = (this.height / this.width) * 0.5;
 
       this.widthChange.emit(this.width);
