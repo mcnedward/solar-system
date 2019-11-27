@@ -27,7 +27,7 @@ export class Orbital {
     this.radius = radius ? radius : options.radius;
     this.level = options.level;
     this.color = options.color();
-    this.distance = distance;
+    this.distance = distance * 0.5;
     this.children = new Array<Orbital>();
     this.speed = Utils.random(0.02, 0.04);
     this.angle = Utils.random(0, Math.PI);
@@ -70,6 +70,9 @@ export class Orbital {
 
   update(parent?: Orbital) {
     this.angle += this.speed;
+    // if (!parent) {
+    //   console.log(this.position)
+    // }
     if (parent) {
       let r = this.radius + this.distance + (parent.radius * 0.5);
       this.position.x = parent.position.x + r * Math.cos(this.angle);

@@ -1,11 +1,10 @@
 #main {
-  display: flex;
   align-items: center;
 }
 #left {
-  flex-grow: 3;
 }
 #right {
+  display: none;
   margin: 0.5rem;
 }
 

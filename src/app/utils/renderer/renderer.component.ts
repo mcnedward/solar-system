@@ -7,10 +7,14 @@ import Logger from '../../utils/logger';
 @Component({
   selector: 'renderer',
   template: `
-  <div #canvasContainer [ngClass]="{'fixed-canvas': fixedSize, 'text-center': center}">
-    <canvas #theCanvas [(width)]="width" [(height)]="height"></canvas>
+  <div #canvasContainer id="canvasContainer" [ngStyle]="{'height': heightPx}" [ngClass]="{'fixed-canvas': fixedSize, 'text-center': center}">
+    <canvas #theCanvas id="theCanvas"></canvas>
   </div>`,
-  styles: ['.fixed-canvas {overflow: auto;}']
+  styles: [
+    '.fixed-canvas {overflow: auto}',
+    '#theCanvas {width: 100%}',
+    '#canvasContainer {max-width: 800px}'
+  ]
 })
 export class Renderer implements AfterViewInit {
   @Input() width: number;
@@ -25,6 +29,8 @@ export class Renderer implements AfterViewInit {
   @ViewChild('canvasContainer') canvasContainer;
   originX: number;
   originY: number;
+  heightPx: string;
+  private scale: number;
   private context: CanvasRenderingContext2D;
   private imageBackground: HTMLImageElement;
   private imageLoaded = false;
@@ -35,13 +41,15 @@ export class Renderer implements AfterViewInit {
   ngAfterViewInit() {
     let canvas = this.canvas.nativeElement;
     this.context = canvas.getContext('2d');
+    
     this.resizeCanvas();
     this.renderLoop();
   }
 
   ellipse(x: number, y: number, radius: number, color: string) {
     this.context.beginPath();
-    this.context.ellipse(x, y, radius, radius, 0, 2 * Math.PI, 0, false);
+    let scaledRadius = this.scale * radius;
+    this.context.ellipse(x, y, scaledRadius, scaledRadius, 0, 2 * Math.PI, 0, false);
     this.context.fillStyle = color;
     this.context.fill();
     this.context.closePath();
@@ -117,16 +125,16 @@ export class Renderer implements AfterViewInit {
       requestAnimationFrame(() => { this.renderLoop(); });
 
       this.context.save();
-
+      
       this.originX = -(this.width / 2);
       this.originY = -(this.height / 2);
       this.context.translate(this.width / 2, this.height / 2);
-
+      
       this.clear();
       this.drawImageBackground();
-
+      
       this.render.emit(this);
-
+      
       this.context.restore();
     } catch (e) {
       Logger.error(e);
@@ -160,13 +168,18 @@ export class Renderer implements AfterViewInit {
   @HostListener('window:resize', ['$event'])
   resizeCanvas(event?) {
     if (!this.fixedSize) {
-      let width = this.canvasContainer.nativeElement.clientWidth;
-      let height = window.innerHeight - 120;
+      let width = this.canvas.nativeElement.width;
+      // let height = width * 1;
+      let height = this.canvas.nativeElement.height;
+      console.log(this.canvas)
+      console.log(height)
 
-      this.canvas.width = width;
       this.canvas.height = height;
       this.width = width;
       this.height = height;
+      this.heightPx = height + 'px';
+      // this.scale = this.width / this.height;
+      this.scale = (this.height / this.width) * 0.5;
 
       this.widthChange.emit(this.width);
       this.heightChange.emit(this.height);
