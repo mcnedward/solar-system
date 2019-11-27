@@ -9,9 +9,11 @@
     </div>
 
     <div id="right">
-      <orbital-card orbitalType="sun" #sunCard></orbital-card>
-      <orbital-card orbitalType="planet" #planetCard></orbital-card>
-      <orbital-card orbitalType="moon" #moonCard></orbital-card>
+      <div class="card-container">
+        <orbital-card orbitalType="sun" #sunCard></orbital-card>
+        <orbital-card orbitalType="planet" #planetCard></orbital-card>
+        <orbital-card orbitalType="moon" #moonCard></orbital-card>
+      </div>
 
       <div class="button-container">
         <button class="btn btn-green btn-solar" (click)="generateSolarSystem()">GENERATE</button>

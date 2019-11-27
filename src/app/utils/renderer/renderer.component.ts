@@ -7,13 +7,13 @@ import Logger from '../../utils/logger';
 @Component({
   selector: 'renderer',
   template: `
-  <div #canvasContainer id="canvasContainer" [ngStyle]="{'height': clientHeight}" [ngClass]="{'fixed-canvas': fixedSize, 'text-center': center}">
+  <div #canvasContainer id="canvasContainer" [ngClass]="{'fixed-canvas': fixedSize, 'text-center': center}">
     <canvas #theCanvas id="theCanvas"></canvas>
   </div>`,
   styles: [
     '.fixed-canvas {overflow: auto}',
     '#theCanvas {width: 100%}',
-    '#canvasContainer {max-width: 800px}'
+    // '#canvasContainer {max-width: 800px}'
   ]
 })
 export class Renderer implements AfterViewInit {

@@ -23,6 +23,7 @@ h3 {
 }
 
 .option-container {
+  width: 50%;
   display: flex;
   align-items: center;
   margin-right: 0.5rem;
@@ -31,7 +32,7 @@ h3 {
     margin-right: 0.5rem;
   }
   .min-max-control {
-    max-width: 100px;
+    width: 100%;
   }
 }
 
