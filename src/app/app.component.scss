@@ -6,13 +6,18 @@ main {
 
 header {
   h1 {
+    margin: 0;
     text-align: center;
   }
 }
 
 #left {
-  // max-width: 1200px;
   margin: 0 auto;
+}
+
+#right {
+  display: flex;
+  flex-wrap: wrap-reverse;
 }
 
 .card-container {
@@ -23,24 +28,22 @@ header {
   orbital-card {
     width: 300px;
     display: flex;
+    margin: 0 10px;
   }
 }
 .button-container {
-  margin: 0 auto;
+  flex-grow: 1;
+  margin: 0 5px;
 }
 
 footer {
   text-align: center;
 }
 
-h1 {
-  margin: 0;
-}
-
 .btn-solar {
   display: block;
   width: 100%;
-  max-width: 300px;
+  max-width: 600px;
   margin-right: auto;
   margin-left: auto;
   margin-bottom: 1rem;
