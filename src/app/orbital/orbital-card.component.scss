@@ -1,6 +1,7 @@
 @import "../../scss/colors";
 
 .card {
+  font-size: 0.8rem;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   color: $black;
@@ -28,6 +29,9 @@ h3 {
 
   label {
     margin-right: 0.5rem;
+  }
+  .min-max-control {
+    max-width: 100px;
   }
 }
 

@@ -7,7 +7,7 @@ import Logger from '../../utils/logger';
 @Component({
   selector: 'renderer',
   template: `
-  <div #canvasContainer id="canvasContainer" [ngStyle]="{'height': heightPx}" [ngClass]="{'fixed-canvas': fixedSize, 'text-center': center}">
+  <div #canvasContainer id="canvasContainer" [ngStyle]="{'height': clientHeight}" [ngClass]="{'fixed-canvas': fixedSize, 'text-center': center}">
     <canvas #theCanvas id="theCanvas"></canvas>
   </div>`,
   styles: [
@@ -29,7 +29,7 @@ export class Renderer implements AfterViewInit {
   @ViewChild('canvasContainer') canvasContainer;
   originX: number;
   originY: number;
-  heightPx: string;
+  clientHeight: string;
   private scale: number;
   private context: CanvasRenderingContext2D;
   private imageBackground: HTMLImageElement;
@@ -168,16 +168,18 @@ export class Renderer implements AfterViewInit {
   @HostListener('window:resize', ['$event'])
   resizeCanvas(event?) {
     if (!this.fixedSize) {
-      let width = this.canvas.nativeElement.width;
+      let nativeElement = this.canvas.nativeElement;
+      let width = nativeElement.width;
       // let height = width * 1;
-      let height = this.canvas.nativeElement.height;
+      let height = nativeElement.height;
       console.log(this.canvas)
       console.log(height)
-
+      
       this.canvas.height = height;
       this.width = width;
       this.height = height;
-      this.heightPx = height + 'px';
+      this.clientHeight = nativeElement.clientHeight + 'px';
+      // this.clientHeight = height + 'px';
       // this.scale = this.width / this.height;
       this.scale = (this.height / this.width) * 0.5;
 

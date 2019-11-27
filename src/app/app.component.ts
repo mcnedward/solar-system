@@ -8,7 +8,7 @@ import Utils from './utils/utils';
 import { Renderer } from './utils/renderer/renderer.component';
 
 @Component({
-  selector: 'app-root',
+  selector: 'body',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
@@ -92,5 +92,9 @@ export class AppComponent implements AfterViewInit {
       child.render(this.renderer, orbital);
       this.renderChildren(child);
     }
+  }
+
+  onHeightChange(height: number) {
+    console.log(height)
   }
 }
