@@ -7,6 +7,7 @@
 html {
   width: 100%;
   min-height: 100vh;
+  margin: 0;
   font-family: "Titillium Web", sans-serif;
   background-color: $black;
   color: $white;
@@ -16,8 +17,70 @@ html {
 body {
   width: inherit;
   min-height: inherit;
+  display: flex;
+  flex-direction: column;
   margin: 0;
-  padding: 0;
+}
+
+header,
+footer {
+  flex: none;
+}
+
+header {
+  text-align: center;
+}
+h1 {
+  margin: 0;
+}
+h3 {
+  margin: 0.2rem;
+}
+
+main {
+  flex: 1 0 auto;
+  padding: var(--space) var(--space) 0;
+  width: 100%;
+}
+main::after {
+  content: "\00a0"; /* &nbsp; */
+  display: block;
+  margin-top: var(--space);
+  height: 0px;
+  visibility: hidden;
+}
+@media (--break-lg) {
+  main {
+    padding-top: var(--space-lg);
+  }
+  main::after {
+    margin-top: var(--space-lg);
+  }
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #cf4647;
+  padding-top: 0.5rem;
+
+  span {
+    margin-right: 0.5rem;
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.3rem;
+  }
+  a:hover {
+    opacity: 0.5;
+  }
+
+  img {
+    width: 32px;
+  }
 }
 
 input {
@@ -25,11 +88,11 @@ input {
   line-height: 24px;
   border: none;
   border-bottom: 1px solid #51b641;
-  transition: all .3s cubic-bezier(.64,.09,.08,1);
+  transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
   border-radius: 0px;
   box-shadow: none;
   outline: none;
-  background: linear-gradient(180deg,hsla(0,0%,100%,0) 96%,#51b641 0);
+  background: linear-gradient(180deg, hsla(0, 0%, 100%, 0) 96%, #51b641 0);
 }
 
 .btn {

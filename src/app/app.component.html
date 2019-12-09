@@ -1,9 +1,9 @@
-<main>
-  <header>
-    <h1>Solar System</h1>
-  </header>
+<header class="header">
+  <h1 class="text-center">Solar System</h1>
+  <h3><a href="https://github.com/mcnedward/solar-system">View the code on GitHub</a></h3>
+</header>
 
-  <div id="solarSystem">
+<main>
     <div id="left">
       <renderer id="renderer" (render)="doRender($event)" (renderResize)="onRenderResize($event)"></renderer>
     </div>
@@ -20,11 +20,10 @@
         <button class="btn btn-purple btn-solar" (click)="resetToDefault()">RESET</button>
       </div>
     </div>
-  </div>
-
-  <footer>
-    <span><a href="https://github.com/mcnedward/solar-system"><i class="fab fa-github"></i></a></span>
-    <span><a href="https://www.linkedin.com/in/mcnedward"><i class="fab fa-linkedin"></i></a></span>
-    <label><a href="https://edwardmcnealy.com">&copy; Edward McNealy {{copyrightDate}}</a></label>
-  </footer>
 </main>
+
+<footer>
+  <span><a href="https://github.com/mcnedward/angualert"><img src="../assets/github.png" alt="Github" /></a></span>
+  <span><a href="https://www.linkedin.com/in/mcnedward"><img src="../assets/linkedin.png" alt="LinkedIn" /></a></span>
+  <label><a href="https://edwardmcnealy.com">&copy; {{copyrightDate}} Edward McNealy</a></label>
+</footer>

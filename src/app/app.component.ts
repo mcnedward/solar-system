@@ -37,7 +37,7 @@ export class AppComponent implements AfterViewInit {
     this.sun = new Orbital(this.sunCard.orbitalOptions, 0, sunX, sunY);
     this.sun.setName('The Sun');
     this.sun.createChildren([this.sunCard.orbitalOptions, this.planetCard.orbitalOptions, this.moonCard.orbitalOptions]);
-    
+
     this.generateStars();
 
     this.sunCard.save();
@@ -108,6 +108,7 @@ export class AppComponent implements AfterViewInit {
     this.generateStars();
 
     // Reposition the sun in the middle
+    if (this.sun == null) return;
     let sunX = this.renderer.width / 2;
     let sunY = this.renderer.height / 2;
     this.sun.position.x = sunX;
